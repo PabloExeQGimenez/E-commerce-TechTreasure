@@ -1,0 +1,78 @@
+@import "colors.css";
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    min-height: 100vh;
+}
+
+main{
+    width: 100% !important;
+}
+.image_product{
+    height: 7rem;
+}
+
+.cardWhith{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1) !important;
+    width: 12rem;
+}
+.cardWhith:hover{
+    border-color: rgb(254, 140, 4);
+}
+
+.imgCard{
+    height: 8rem;
+    background-color: white;
+    object-fit: contain;
+}
+.bgHover{
+    background-color: rgb(254, 140, 4);
+    border-radius: 15px;
+}
+
+.buttonProduct{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    border: thin solid rgb(254, 140, 4);
+    background-color: rgb(254, 140, 4);
+    transition: all 0.5s ease-in;
+    overflow: hidden;
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem;
+    padding: 1rem;
+    height: 2.8rem !important;
+}
+
+.buttonProduct:hover {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    color: rgb(104, 104, 104);
+    border: thin solid grey;
+    background: linear-gradient(to bottom, rgb(236, 167, 134), #ffffff) !important;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+  }
+
+@media screen and (min-width: 768px){
+    .bgCard{
+        background-color: white;
+    }
+
+    .imgCard{
+        height: 12rem;
+    }
+    .cardWhith{
+        width: 12rem !important;
+    }
+}
+
+@media screen and (min-width: 1200px){
+
+    .cardWhith{
+        width: 15rem !important;
+    }
+}
+

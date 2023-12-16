@@ -1,0 +1,48 @@
+:root{
+    --grey: #2D2D33;
+    --grey2: #37373f;
+    --grey2transp: #37373fb7;
+    --grey3:#d5d3d348;
+    --white: #fff;
+    --orange: #FE8C04;
+    --titulo: #424143;
+    --bgCard: #eee;
+    --textProduct: #706F6F;
+    --bgCardColor: linear-gradient(to bottom, #FFFFFF, #D6D6D6);
+}
+.o_range{
+    color: var(--orange);
+}
+.w_hite{
+    color: var(--white);
+}
+.g_rey2{
+    color: var(--grey2)
+}
+.background_grey2{
+    background-color:var(--grey2)
+}
+.background_grey3{
+    background-color: var(--grey2)
+}
+
+.line_orange{
+    height: 0.4rem;
+    background-color: var(--orange);
+}
+
+.titulo{
+    color: var(--titulo);
+    font-size: 25px !important;
+    font-family: 'Montserrat SemiBold',sans-serif;
+}
+
+.bgCard{
+    background-color: var(--bgCard);
+}
+.textProduct{
+    color: var(--textProduct);
+}
+.bgCardColor{
+    background: linear-gradient(to bottom, rgb(245, 214, 200), #ffffff) !important;
+}

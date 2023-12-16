@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+    <title>Tech Treasure</title>
+    <link rel="shortcut icon" href="../images/logo.jpg" type="image/x-icon">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/1e025ea79c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/detailProduct.css" />
+</head>
+
+<body>
+    <div id="app" class="grid_container">
+
+      <header>
+        <div class="nav_top container">
+  
+          <ul class="ul_top">
+            <li v-if="loggedIn"><span class="li_login_logout">Welcome User! </span></li>
+            <li v-if="loggedIn">
+              <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g">
+                <span class="li_login_logout"><i class="o_range bi bi-box-arrow-in-right"></i> Login/Register</span>
+              </button>
+            </li>
+            <li v-if="!loggedIn"><span class="li_login_logout">Hello! {{name}} {{lastName}} </span></li>
+            <li v-if="!loggedIn"><a href="./customer.html"><span class="li_login_logout"><i
+                    class="bi bi-person-circle"></i>Your account</span></a></li>
+            <li v-if="!loggedIn"><a href="./favorites.html"><span class="li_login_logout"><i
+                    class="o_range bi bi-star"></i>Your Favorites</span></a></li>
+            <li v-if="!loggedIn"><button type="button" class="btn " @click="logout">
+                <span class="li_login_logout"><i class="bi bi-box-arrow-in-left"></i>See you later</span>
+              </button>
+            </li>
+          </ul>
+  
+  
+  
+        </div> <!--nav_top-->
+        <div class="background_grey2">
+  
+          <div class="nav_center container background_grey2 ">
+            <div class="m_enu">
+              <button class="btn_menu " type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
+                aria-controls="staticBackdrop">
+                <i class="fa-solid fa-bars o_range mx-2"></i>
+              </button>
+            </div>
+            <div class="offcanvas offcanvas-start menu_offcanvas" data-bs-backdrop="static" tabindex="-1"
+              id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+              <div class="offcanvas-header">
+                <h4 class="offcanvas-title text-white" id="staticBackdropLabel" v-if="loggedIn">Welcome User! <i
+                    class="bi bi-box-arrow-in-right o_range"></i><button type="button" class="btn" data-bs-toggle="modal"
+                    data-bs-target="#modal_login" aria-label="g" v-if="loggedIn">
+                    <span class="li_login_logout text-white"></i>
+                      Login/Register</span>
+                  </button>
+                </h4>
+                <h5 class="text-white" v-if="!loggedIn">Hello! {{name}} {{lastName}} </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <hr class="o_range mx-1">
+  
+              <div class="offcanvas-body">
+                <div class="container menu_lateral">
+                  <ul>
+                    <li>
+  
+                    </li>
+                    <li> <a href="./customer.html" v-if="!loggedIn"><span class=""><i
+                            class="bi bi-person-circle o_range"></i> Your account</span></a></li>
+                    <li> <a href="./favorites.html" v-if="!loggedIn"><span class=""><i
+                            class="bi bi-star o_range"></i> Your Favorites</span></a></li>
+                    <li><button type="button" class="btn " @click="logout" v-if="!loggedIn"><span class=""><i
+                            class="bi bi-box-arrow-in-left o_range"></i> See you later</span></button></li>
+  
+  
+                  </ul>
+                  <ul class="ul_offc m-0">
+                    <h5 class="offcanvas-title text-center text-bg-secondary rounded-4">Category</h5>
+                    <li v-for="category of listCategory" class="menu_cat_lateral"><a
+                        :href="'./assets/pages/products.html?id=' + category.id">{{remove_(category.name)}}</a></li>
+  
+                  </ul>
+                  <hr class="o_range mx-5">
+  
+                </div>
+  
+              </div>
+            </div>
+  
+            <a href="#">
+              <h1 class="w_hite">TECH<span class="o_range"><img src="../images/logo.png" alt=""></span>REASURE
+              </h1>
+            </a>
+            <!-- search -->
+            <div class="">
+              <form role="search">
+                <input v-model="inputSearch" class="form-control me-2 s_earch_imput" type="search"
+                  placeholder="What you were looking for, find it here!" aria-label="Search">
+              </form>
+              <div class="position-absolute top-10 start-30 w-50 s_earch" v-show="inputSearch !== ''">
+                {{filter}}
+                <table v-if="filterProducts.length > 0" class="table table-striped">
+                  <tr v-for="produ in filterProducts.slice(0, 7)">
+                    <td><a :href="'./assets/pages/detailProduct.html?id=' + produ.id">{{ produ.name }}</a></td>
+                    <td><img :src="produ.imageURL" class="" :alt="produ.name"></td>
+                  </tr>
+                </table>
+                <p class="alert alert-warning" v-else>No found result</p>
+              </div>
+            </div>
+            <!-- search -->
+            <!--btns medio-->
+            <div class="menu_center">
+              <button class="btn position-relative" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasBottom"><i class="o_range bi bi-cart3 "></i>
+                <span class="cart-badge" id="car_account">
+                  {{items}}
+                </span>
+              </button>
+            </div>
+  
+          </div>
+          <!--fin nav_center-->
+          <!--menu bajo-->
+          <div class="background_grey3">
+            <div class="nav_bottom background_grey3 container">
+              <ul class="ul_bottom background_grey3 ">
+                <li class="libottom1">
+                  <div class="dropdown">
+                    <button class="btn border-0 dropdown-toggle btn_category" type="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <span class="o_range">CATEGORIES</span>
+                    </button>
+                    <ul class="dropdown-menu ">
+                      <li v-for="category of listCategory" class="li_offc"><a
+                          :href="'./products.html?id=' + category.id">{{remove_(category.name)}}</a></li>
+                      <li class="li_offc">
+                    </ul>
+                  </div>
+                </li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=palit'"><img
+                      src="../images/palit.png" alt="Palit"></a></li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=ASUS'"><img
+                      src="../images/asus.png" alt="Asus"></a></li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=INTEL'"><img
+                      src="../images/intelnewlogoblanco.png" alt="Intel"></a></li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=AMD'"><img
+                      src="../images/amd.png" alt="AMD"></a></li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=MSI'"><img
+                      src="../images/logoblancomsi_chc.png" alt="MSI"></a></li>
+                <li class="libottom3"><a :href="'./productsBrand.html?brand=THERMALTAKE'"><img
+                      src="../images/thermaltake.png" alt="Thermaltake"></a></li>
+  
+              </ul>
+            </div>
+          </div>
+          <!--fin menu bajo-->
+          <!--fin nav_bottom -->
+  
+        </div>
+      </header>
+        <main class="w-100">
+            <div class="d-flex flex-column">
+                <div class="d-none d-lg-block  border-bottom border-2 border-gray p-4">
+                    <a class="mx-3 text-decoration-none text-reset" :href="`./products.html?id=${product.categoryId}`"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-3" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/></svg>
+                      Back To List
+                    </a>
+                    <span>Products > </span>
+                    <a class="o_range text-decoration-none" :href="`./products.html?id=${product.categoryId}`">{{category.name.replace(/_/g, ' ')}}</a>
+                </div>
+                <section class="d-flex flex-column align-items-center justify-content-start flex-lg-row ">
+                        <div class="d-flex flex-column align-items-center col-lg-7">
+                            <div class="d-flex flex-row ">
+                                <h1 class="col-8 me-3 " style="font-size: 18px;">{{product.name}}                      </h1>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <button @click="SelectedFavorite()" type="button" style="border: none; background: none;">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" :fill="getHeartColor()" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                      </svg>
+                                    </button>   
+                                </div>
+                            </div>
+                            <img :src="product.imageURL" :alt="product.name">
+                        </div>
+                        <div class="bgCard col-lg-4 border-start border-2 border-gray ps-lg-4">
+                            <article class="ps-2 border-start border-5 border-orange">
+                                <div class="priceW d-flex justify-content-around align-items-center" style="height: 6rem;">
+                                    <p style="font-size: 33px;">U$S {{product.price}}</p>
+                                    <div class="d-flex">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-cash-coin o_range" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                                                <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z"/>
+                                                <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                                                <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z"/>
+                                            </svg>
+                                        </div>
+                                        <p class="d-flex o_range px-2" style="font-size: 14px;">
+                                            special price Tech Teasure
+                                        </p>
+                                        <!-- <p class="d-none d-md-block">
+                                            Valid for 1 payment in cash, debit or bank transfer.
+                                        </p> -->
+                                    </div>
+                                </div>
+                            </article>
+                            <div class="border-bottom border-2 border-gray my-3"></div>
+                            <article class="priceW ps-2 border-start border-5 border-grey2">
+                                <div class="d-flex justify-content-start align-items-center" style="height: 6rem;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-truck o_range mx-4" viewBox="0 0 16 16">
+                                        <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456M12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                                    </svg>
+                                    <div>
+                                        <p>RECEIVE YOUR PRODUCT </p>
+                                        <p>Within 72 Business Hours</p>
+                                    </div>
+                                </div>
+                            </article>
+                            <div class="border-bottom border-2 border-gray my-3"></div>
+                            <article>
+                                <div class="container col-10 col-md-6 mt-4 col-lg-10">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">AMOUNT:</span>
+                                        <button class="btn btn-outline-secondary" type="button" id="decrementButton" @click="decrementQuantity(product)">-</button>
+                                            <input type="number" class="form-control text-center" id="quantityInput" min="0" name="quantity" value="0"  @input="updateQuantity(product, $event)">
+                                        <button class="btn btn-outline-secondary" type="button" id="incrementButton" @click="incrementQuantity(product)">+</button>
+                                    </div>
+                                    <div class="d-grid gap-2 col-10 col-md-7 col-lg-10 mx-auto">
+                                        <button class="buttonProduct btn btn-primary" type="button" @click="addCart(product.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+                                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </article> 
+                        </div>    
+                </section>
+                <section class="d-flex flex-column  mt-0 ps-5 pt-2 border-top border-2 border-gray mt-lg-5">
+                    <h2 class="py-3" style="font-size: 23px;">Description</h2>
+                    <article>
+                        <div class="col-8 mb-5">
+                          <strong>{{product.description}}</strong>
+                        </div>
+                        <div class="col-7 mb-5">
+                          <table class="table" style="color:#fd611a">
+                              <thead>
+                                <tr>
+                                  <th scope="col">GENERAL CHARACTERISTICS</th>
+                                </tr>
+                              </thead>
+                              <tbody class="table-group-divider ">
+                                  <tr>
+                                    <th scope="row">Name:</th>
+                                    <td>{{product.name}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Price:</th>
+                                    <td>U$S {{product.price}}</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Brand:</th>
+                                    <td>{{product.brand.replace(/_/g, ' ')}}</td>
+                                  </tr>
+                                  <tr>
+                                      <th scope="row">Stock:</th>
+                                      <td>{{product.stock}}</td>
+                                  </tr>
+                                  <tr>
+                                      <th scope="row">Sku:</th>
+                                      <td>{{product.sku}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+
+                      <div class="row border-top border-3 border-secundary-subtle" v-if="productReviews.length !== 0">
+                        <h2 class="py-3" style="font-size: 23px;">User Comment ({{productReviews.length}})
+                          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#fd611a" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1z"/>
+                          </svg> 
+                        </h2>
+                        <div class="col-sm-5"  v-for="review of productReviews">
+                          <div class="card my-2">
+                            <div class="card-body">
+                              <!-- <h5 class="card-title">user comment</h5> -->
+                              <p class="card-text">{{review.comment}}</p>
+                              <span>Ranting: {{review.rating}}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                </section>
+                <section>
+                    <div id="carouselExampleControls" class="carousel slide pe-5" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img src="../images/brands1.png" class="d-block w-100" alt="..." >
+                          </div>
+                          <div class="carousel-item">
+                            <img src="../images/brands2.png" class="d-block w-100" alt="..." >
+                          </div>
+                          <div class="carousel-item">
+                            <img src="../images/brands3.png" class="d-block w-100" alt="..." >
+                          </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+
+            <!-- codigo de modales -->
+                        <!-- Modal LOGIN-->
+                        <div class="modal fade " id="modal_login" tabindex="-1" aria-hidden="true" aria-labelledby="modalTitle">
+                            <div class="modal-dialog ">
+                                <div class="modal-content modal_login">
+                                    <!-- <div class="modal-header ">
+                                    
+                                    </div> -->
+                                    <div class="modal-body ">
+                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <!-- Pills navs -->
+                                        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active btn_login" id="tab-login" data-mdb-pill-init href="#pills-login"
+                                                    role="tab" aria-controls="pills-login" aria-selected="true">Login
+                                                </a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link  btn_sign mx-3" id="tab-register" data-mdb-pill-init href="#pills-register"
+                                                    role="tab" aria-controls="pills-register" aria-selected="false">Register
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <!-- Pills navs -->
+                    
+                                        <!-- Pills content -->
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                                                <form id="loginForm">
+                                                    <div class="text-center mb-3">
+                                                        <p>Sign in with:</p>
+                                                    </div>
+                                                    <!-- Email input -->
+                                                    <div data-mdb-input-init class="form-outline mb-4">
+                                                        <input type="email" id="loginName" class="form-control" v-model="email" required placeholder="Name">
+                                                    <!-- <label class="form-label" for="loginName">Email or username</label> -->
+                                                    </div>
+                            
+                                                    <!-- Password input -->
+                                                    <div data-mdb-input-init class="form-outline mb-4">
+                                                        <input type="password" id="loginPassword" class="form-control" v-model="password" required placeholder="Password">
+                                                    </div>
+                            
+                                                    <!-- 2 column grid layout -->
+                                                    <div class="row mb-4">
+                                                        <div class="col-md-6 d-flex justify-content-center">
+                                                        <!-- Checkbox -->
+                                                            <div class="form-check mb-3 mb-md-0">
+                                                                <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked>
+                                                                <label class="form-check-label" for="loginCheck"> Remember me </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 d-flex justify-content-center">
+                                                            <!-- Simple link -->
+                                                            <a href="#!">Forgot password?</a>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <!-- Submit button -->
+                                                    <button type="button" class="btn btn-block mb-4 btn_sign mx-auto" @click="loginAndCloseModal" data-bs-dismiss="modal_login">Sign in</button>
+                            
+                                                    <!-- Register buttons -->
+                                                    <div class="text-center">
+                                                        <p>Not a member? <a href="#!">Register</a></p>
+                                                    </div>
+                                                </form>
+                                            </div>
+                        
+                                            <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+                                                <form id="registerForm" class="text-center">
+                            
+                                                    <div class="mb-3">
+                                                        <p>Sign up with:</p>
+                                                    </div>
+                            
+                                                    <!-- Name input -->
+                                                    <div class="form-outline mb-1">
+                                                        <input type="text" id="registerName" class="form-control" placeholder="Name" v-model="nameRegister">
+                                                    </div>
+                            
+                                                    <!-- Lastname input -->
+                                                    <div class="form-outline mb-1">
+                                                        <input type="text" id="registerUsername" class="form-control" placeholder="Lastname" v-model="lastNameRegister">
+                                                    </div>
+                            
+                                                    <!-- Email input -->
+                                                    <div class="form-outline mb-1">
+                                                        <input type="email" id="registerEmail" class="form-control" placeholder="Email" v-model="emailRegister">
+                                                    </div>
+                            
+                                                    <!-- Address input -->
+                                                    <div class="form-outline mb-2">
+                                                        <input type="text" id="registerAddress" class="form-control" placeholder="Address" v-model="addressRegister">
+                                                    </div>
+                            
+                                                    <!-- Telephone input -->
+                                                    <div class="form-outline mb-2">
+                                                        <input type="text" id="registerTelephone" class="form-control" placeholder="Telephone" v-model="telephoneRegister">
+                                                    </div>
+                            
+                                                    <!-- Password input -->
+                                                    <div class="form-outline mb-2">
+                                                        <input type="password" id="registerPassword" class="form-control" placeholder="Password" v-model="passwordRegister">
+                                                    </div>
+                            
+                                                    <!-- Repeat Password input -->
+                                                    <div class="form-outline mb-2">
+                                                        <input type="password" id="registerRepeatPassword" class="form-control" placeholder="Repeat Password" />
+                                                    </div>
+                            
+                                                    <!-- Checkbox -->
+                                                    <div class="form-check d-flex justify-content-center mb-4">
+                                                        <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked aria-describedby="registerCheckHelpText" />
+                                                        <label class="form-check-label" for="registerCheck">I have read and agree to the terms</label>
+                                                    </div>
+                            
+                                                    <!-- Submit button -->
+                                                    <button data-mdb-ripple-init type="button" class="btn btn-block mb-3 btn_sign" @click="register">Sign in</button>
+                                                </form>
+                                            </div>
+                        
+                                        </div>
+                                        <!-- Pills content -->
+                                    </div>
+                    
+                                </div>
+                            </div>
+                        </div>
+                      <!--fin modal LOGIN-->
+              
+                      <!-- MODAL carrito-->
+                      <div class="offcanvas offcanvas-end cart_offca" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                        <div class="offcanvas-header">
+                          <h3 class="offcanvas-title" id="offcanvasScrollingLabel">Shopping Cart</h3>
+                          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body m-0">
+              
+                        <section class=""> <!--h-custom pone la barra de desplazamiento-->
+                            <div class="container ">
+                                <div class="row d-flex justify-content-center align-items-center">
+                                    <div class="col-12">
+                                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                                            <div class="card-body p-0 ">
+                                                <div class="row g-0">
+                                                    <div class="col-lg-8">
+                                                        <div class="p-2">
+                                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                                <h6 class="mb-0 text-muted">{{items}} Items</h6>
+                                                            </div>
+                                                            <hr class="my-1 o_range">
+              
+                                                            <div class="row d-flex justify-content-between align-items-center m-1" v-for="product of cart">
+                                                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                                                    <img :src="product.imageURL" class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                                                    <h6 class="text-muted">{{product.name}}</h6>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex ">
+                                                                    <button class="btn btn-link px-1" @click="decrementQuantity(product)"><i class="fas fa-minus o_range"></i></button>
+                                
+                                                                    <input id="form1" min="0" name="quantity" :value="product.quantity" type="number" class="form-control form-control-sm " @input="updateQuantity(product, $event)">
+                                
+                                                                    <button class="btn btn-link px-1" @click="incrementQuantity(product)"><i class="fas fa-plus o_range"></i></button>
+                                                                </div>
+                                                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                                    <h6 class="mb-0">U$D {{product.price}}</h6>
+                                                                </div>
+                                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                                    <a href="#!" class="text-muted" @click="removeFromCart(product)"><i class="bi bi-trash3"></i></a>
+                                                                </div>
+                                                                <hr class="my-1 o_range">
+                                                            </div>
+              
+                                                            <hr class="my-1 o_range">
+              
+              
+              
+                                                            <div class="pt-2 d-flex justify-content-evenly">
+                                                                <h6 class="mb-0"><a href="#!" class="text-body" data-bs-dismiss="offcanvas"
+                                                                    aria-label="Close"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
+                                                                </h6>
+                                                                <h6 class="mb-0"><a href="#" @click="clearCart" class="text-body"><i
+                                                                    class="bi bi-trash3"></i> Empty cart</a>
+                            
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 bg-gre">
+                                                        <div class="p-5">
+                                                            <h3 class="fw-bold mb-2 mt-2 pt-1">Summary</h3>
+                                                            <hr class="my-4 o_range">
+                            
+                                                            <div class="d-flex justify-content-between mb-4">
+                                                                <h5 class="text-uppercase" v-if="items === 0">Not Products</h5>
+                                                                <h5 class="text-uppercase" v-if="items > 1">{{ items }} Products</h5>
+                                                                <h5 class="text-uppercase" v-if="items === 1">{{ items }} Product</h5>
+                                                            </div>
+                                                            <!-- <h5 class="text-uppercase">Total </h5>
+                                                            <h5>Total Amount: U$D {{totalAmount}}</h5> -->
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mb-1">
+                                                            <h6 class="text-uppercase">Total price</h6>
+                                                        </div>
+                                                        <div></div>
+                                                        <h3 class="center">U$D {{totalAmount}}</h3>
+                                                        <hr class="my-4 o_range">
+                        
+                                                        <button type="button" class="btn btn_pays btn-block btn-lg" @click="redirect">Pays</button>
+                                                    </div>
+              
+                                                    <!-- <h5 class="text-uppercase mb-3">Shipping</h5>
+                        
+                                                        <div class="mb-4 pb-2">
+                                                        <select class="select">
+                                                            <option value="1">Standard-Delivery- €5.00</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                            <option value="4">Four</option>
+                                                        </select>
+                                                        </div>
+                        
+                                                        <h5 class="text-uppercase mb-3">Give code</h5>
+                        
+                                                        <div class="mb-5">
+                                                        <div class="form-outline">
+                                                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                                                            <label class="form-label" for="form3Examplea2">Enter your code</label>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </section>
+                      </div>
+                    <!-- fin MODAL carrito-->
+        </main>
+
+        <!-- Footer -->
+      <footer class="text-center text-lg-start text-muted">
+        <!-- Section: Social media -->
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+          <!-- Left -->
+          <div class="me-5 d-none d-lg-block">
+            <span>Get connected with us on social networks:</span>
+          </div>
+          <!-- Left -->
+    
+          <!-- Right -->
+          <div>
+            <a href="www.facebook.com" class="me-4 text-reset">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="www.twiter.com" class="me-4 text-reset">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-google"></i>
+            </a>
+            <a href="www.instagram.com" class="me-4 text-reset">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+          <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+    
+        <!-- Section: Links  -->
+        <section class="">
+          <div class="container text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+              <!-- Grid column -->
+              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                <!-- Content -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  <i class="fas fa-gem me-3"></i>Tech Treasure
+                </h6>
+                <p>
+                  The technological future at your fingertips.
+                </p>
+                <p>
+                  We provide free advice through our communication channels.
+                </p>
+              </div>
+              <!-- Grid column -->
+    
+              <!-- Grid column -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  About us?
+                </h6>
+                <p>
+                  <a href="#!" class="text-reset">Terms and Conditions</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Technical service</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Privacy Policy</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Contact us</a>
+                </p>
+              </div>
+              <!-- Grid column -->
+    
+              <!-- Grid column -->
+              <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  Services
+                </h6>
+                <p>
+                  <a href="#!" class="text-reset">Budget</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Facilities</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Wholesale</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Help</a>
+                </p>
+              </div>
+              <!-- Grid column -->
+    
+              <!-- Grid column -->
+              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                <p>
+                  <i class="fas fa-envelope me-3"></i>
+                  info@example.com
+                </p>
+                <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+          </div>
+        </section>
+        <!-- Section: Links  -->
+    
+        <!-- Copyright -->
+        <div class="text-center p-4 w_hite">
+          © 2023 Copyright:
+          <a class="text-reset fw-bold w_hite" href="">MindHub-51-</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+
+    </div>
+
+
+    <!--bootstrap axios vue-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- scrip de msj de alerta -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="../scripts/detailProduct.js"></script>
+
+    <script>
+        document.getElementById('tab-login').addEventListener('click', function () {
+          document.getElementById('pills-login').classList.add('show', 'active');
+          document.getElementById('pills-register').classList.remove('show', 'active');
+        });
+    
+        document.getElementById('tab-register').addEventListener('click', function () {
+          document.getElementById('pills-login').classList.remove('show', 'active');
+          document.getElementById('pills-register').classList.add('show', 'active');
+        });
+      </script>
+</body>
+</html>

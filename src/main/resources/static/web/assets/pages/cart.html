@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Treasure</title>
+  <link rel="shortcut icon" href="./assets/images/logo.jpg" type="image/x-icon">
+  <link rel="shortcut icon" href="./assets/images/logo.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://kit.fontawesome.com/1e025ea79c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./assets/styles/style.css">
+</head>
+
+<body class="border-primary bg-secondary">
+  <div id="app" class="grid_container">
+    <header>
+      <div class="nav_top container">
+        <ul class="ul_top">
+          <li class="li1"><a href="./pruebas.html"><span><i class="fa-solid fa-location-crosshairs"></i>Track
+                your
+                purchase</span></a></li>
+          <li class="li2"><a href=""><span><i class="fa-solid fa-location-dot"></i>Pick up your
+                purchase</span></a></li>
+          <li class="li3"><a href=""><span><i class="fa-solid fa-headphones"></i>Help Center</span></a></li>
+        </ul>
+      </div> <!--nav_top-->
+      <div class="background_grey2">
+
+        <div class="nav_center container background_grey2 ">
+          <div class="m_enu">
+            <button class="btn_menu " type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
+              aria-controls="staticBackdrop">
+              <i class="fa-solid fa-bars o_range mx-2"></i>
+            </button>
+          </div>
+          <div class="offcanvas offcanvas-start menu_offcanvas" data-bs-backdrop="static" tabindex="-1"
+            id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="staticBackdropLabel"> <i class="bi bi-person-circle"></i>Login/Register
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <hr class="o_range mx-4">
+
+            <div class="offcanvas-body">
+              <div class="container">
+                <ul class="ul_offc m-0">
+                  <li class="li_offc"><a href="">
+                      <p class="span_offc"><i class="bi bi-crosshair"></i> Track your
+                        purchase</p>
+                    </a></li>
+                  <li class="li_offc"><a href="">
+                      <p class="span_offc"><i class="bi bi-geo-alt"></i> Pick up your
+                        purchase</p>
+                    </a></li>
+                  <li class="li_offc"><a href="">
+                      <p class="span_offc"><i class="bi bi-headset"></i> Help Center</p>
+                    </a></li>
+                  <hr class="o_range mx-5">
+                  <h5 class="offcanvas-title text-center text-bg-secondary rounded-end-4">Category</h5>
+                  <li v-for="category of listCategory" class="li_offc"><a
+                      :href="'./assets/pages/products.html?id=' + category.id">{{category.name}}</a></li>
+
+                </ul>
+                <hr class="o_range mx-5">
+
+              </div>
+
+            </div>
+          </div>
+
+          <h1 class="w_hite">TECH<span class="o_range"><img src="./assets/images/logo.png" alt=""></span>EASURE
+          </h1>
+          <div class="">
+            <form role="search">
+              <input class="form-control me-2 s_earch_imput" type="search" placeholder="Search" aria-label="Search">
+            </form>
+          </div>
+          <!--btns medio-->
+          <div class="menu_center">
+            <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g"><i
+                class="o_range bi bi-person"></i></button>
+            <!-- <i class="o_range bi bi-star"></i> -->
+            <button class="btn position-relative" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"><i
+                class="o_range bi bi-cart3 "></i><span
+                class="position-absolute my-3 start-100 translate-middle badge rounded-pill badge-danger" id="car_account">
+                0
+                <span class="visually-hidden">unread messages</span>
+              </span></button>
+          </div>
+
+        </div>
+        <!--fin nav_center-->
+        <!--menu bajo-->
+        <div class="background_grey3">
+          <div class="nav_bottom background_grey3 container">
+            <ul class="ul_bottom background_grey3 ">
+              <li class="libottom1">
+                <div class="dropdown">
+                  <button class="btn border-0 dropdown-toggle btn_category" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="o_range">Categories</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li v-for="category of listCategory" class="li_offc"><a
+                        :href="'./assets/pages/products.html?id=' + category.id">{{category.name}}</a></li>
+                  </ul>
+                </div>
+              </li>
+              <li class="libottom3"><a href=""><img src="./assets/images/palit.png" alt=""></a></li>
+              <li class="libottom3"><a href=""><img src="./assets/images/asus.png" alt=""></a></li>
+              <li class="libottom3"><a href=""><img src="./assets/images/intelnewlogoblanco.png" alt=""></a></li>
+              <li class="libottom3"><a href=""><img src="./assets/images/amd.png" alt=""></a></li>
+              <li class="libottom3"><a href=""><img src="./assets/images/logoblancomsi_chc.png" alt=""></a></li>
+              <li class="libottom3"><a href=""><img src="./assets/images/thermaltake.png" alt=""></a></li>
+              <li class="libottom2 w_hite"><a class="w_hite" href=""><i class="fa-solid fa-computer w_hite"></i> Build
+                  your PC!</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+        <!--fin menu bajo-->
+        <!--fin nav_bottom -->
+
+      </div>
+    </header>
+
+
+    <main>
+
+
+
+    </main>
+
+     <!-- Footer -->
+     <footer class="text-center text-lg-start text-muted">
+        <!-- Section: Social media -->
+        <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+          <!-- Left -->
+          <div class="me-5 d-none d-lg-block">
+            <span>Get connected with us on social networks:</span>
+          </div>
+          <!-- Left -->
+  
+          <!-- Right -->
+          <div>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-google"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="" class="me-4 text-reset">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+          <!-- Right -->
+        </section>
+        <!-- Section: Social media -->
+  
+        <!-- Section: Links  -->
+        <section class="">
+          <div class="container text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row mt-3">
+              <!-- Grid column -->
+              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                <!-- Content -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  <i class="fas fa-gem me-3"></i>Company name
+                </h6>
+                <p>
+                  Here you can use rows and columns to organize your footer content. Lorem ipsum
+                </p>
+              </div>
+              <!-- Grid column -->
+  
+              <!-- Grid column -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  Products
+                </h6>
+                <p>
+                  <a href="#!" class="text-reset">fasdfag</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">akjhsdfk</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">akjshdf</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">ajshdfkjh</a>
+                </p>
+              </div>
+              <!-- Grid column -->
+  
+              <!-- Grid column -->
+              <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">
+                  Useful links
+                </h6>
+                <p>
+                  <a href="#!" class="text-reset">Pricing</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Settings</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Orders</a>
+                </p>
+                <p>
+                  <a href="#!" class="text-reset">Help</a>
+                </p>
+              </div>
+              <!-- Grid column -->
+  
+              <!-- Grid column -->
+              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                <!-- Links -->
+                <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+                <p>
+                  <i class="fas fa-envelope me-3"></i>
+                  info@example.com
+                </p>
+                <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+              </div>
+              <!-- Grid column -->
+            </div>
+            <!-- Grid row -->
+          </div>
+        </section>
+        <!-- Section: Links  -->
+  
+        <!-- Copyright -->
+        <div class="text-center p-4 w_hite">
+          © 2021 Copyright:
+          <a class="text-reset fw-bold w_hite" href="">MindHub</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+  
+    </div> <!--.grid_container .app-->
+  
+  
+    <!--bootstrap axios vue-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <script src="./assets/scripts/index.js"></script>
+    <script src="./assets/scripts/cart-service.js" defer></script>
+    <script>
+  
+      document.getElementById('tab-login').addEventListener('click', function () {
+        document.getElementById('pills-login').classList.add('show', 'active');
+        document.getElementById('pills-register').classList.remove('show', 'active');
+      });
+  
+      document.getElementById('tab-register').addEventListener('click', function () {
+        document.getElementById('pills-login').classList.remove('show', 'active');
+        document.getElementById('pills-register').classList.add('show', 'active');
+      });
+    </script>
+  </body>
+  
+  </html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your account</title>
+    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/1e025ea79c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body class="border-primary bg-secondary">
+    <div id="app" class="grid_container">
+
+        <header>
+            <!-- <div class="nav_top container">
+
+        <ul class="ul_top">
+          <li v-if="loggedIn"><span class="li_login_logout">Welcome User! </span></li>
+          <li v-if="loggedIn">
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g">
+              <span class="li_login_logout"><i class="o_range bi bi-box-arrow-in-right"></i> Login/Register</span>
+            </button>
+          </li>
+          <li v-if="!loggedIn"><span class="li_login_logout">Hello! {{name}} {{lastName}} </span></li>
+          <li v-if="!loggedIn"><a href="./assets/pages/customer.html"><span class="li_login_logout"><i
+                  class="bi bi-person-circle"></i>Your account</span></a></li>
+          <li v-if="!loggedIn"><a href="./assets/pages/customer.html"><span class="li_login_logout"><i
+                  class="o_range bi bi-star"></i>Your Favorites</span></a></li>
+          <li v-if="!loggedIn"><button type="button" class="btn " @click="logout">
+              <span class="li_login_logout"><i class="bi bi-box-arrow-in-left"></i>See you later</span>
+            </button>
+          </li>
+        </ul>
+
+
+
+      </div> nav_top -->
+            <div class="background_grey2">
+
+                <div class="nav_center container background_grey2 ">
+                    <div class="m_enu">
+                        <button class="btn_menu " type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+                            <i class="fa-solid fa-bars o_range mx-2"></i>
+                        </button>
+                    </div>
+                    <div class="offcanvas offcanvas-start menu_offcanvas" data-bs-backdrop="static" tabindex="-1"
+                        id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+                        <div class="offcanvas-header">
+                            <h4 class="offcanvas-title text-white" id="staticBackdropLabel" v-if="loggedIn">Welcome
+                                User! <i class="bi bi-box-arrow-in-right o_range"></i><button type="button" class="btn"
+                                    data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g" v-if="loggedIn">
+                                    <span class="li_login_logout text-white"></i>
+                                        Login/Register</span>
+                                </button>
+                            </h4>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                        <hr class="o_range mx-1">
+
+                        <div class="offcanvas-body">
+                            <div class="container menu_lateral">
+
+                                <ul class="ul_offc m-0">
+                                    <h5 class="offcanvas-title text-center text-bg-secondary rounded-4">Category</h5>
+                                    <li v-for="category of listCategory" class="menu_cat_lateral"><a
+                                            :href="'../pages/products.html?id=' + category.id">{{remove_(category.name)}}</a>
+                                    </li>
+
+                                </ul>
+                                <hr class="o_range mx-5">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <a href="../../index.html">
+                        <h1 class="w_hite">TECH<span class="o_range"><img src="../images/logo.png" alt=""></span>REASURE
+                        </h1>
+                    </a>
+                    <!-- search -->
+                    <div class="">
+                        <form role="search">
+                            <input v-model="inputSearch" class="form-control me-2 s_earch_imput" type="search"
+                                placeholder="What you were looking for, find it here!" aria-label="Search">
+                        </form>
+                        <div class="position-absolute top-10 start-30 w-50 s_earch" v-show="inputSearch !== ''">
+                            {{filter}}
+                            <table v-if="filterProducts.length > 0" class="table table-striped">
+                                <tr v-for="produ in filterProducts.slice(0, 7)">
+                                    <td><a :href="'../pages/detailProduct.html?id=' + produ.id">{{ produ.name }}</a>
+                                    </td>
+                                    <td><img :src="produ.imageURL" class="" :alt="produ.name"></td>
+                                </tr>
+                            </table>
+                            <p class="alert alert-warning" v-else>No found result</p>
+                        </div>
+                    </div>
+                    <!-- search -->
+                    <!--btns medio-->
+                    <div class="menu_center">
+                        <button class="btn position-relative" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasScrolling" aria-controls="offcanvasBottom"><i
+                                class="o_range bi bi-cart3 "></i>
+                            <span class="cart-badge" id="car_account">
+                                {{items}}
+                            </span>
+                        </button>
+                    </div>
+
+                </div>
+                <!--fin nav_center-->
+                <!--menu bajo-->
+                <div class="background_grey3">
+                    <div class="nav_bottom background_grey3 container">
+                        <ul class="ul_bottom background_grey3 ">
+                            <li class="libottom1">
+                                <div class="dropdown">
+                                    <button class="btn border-0 dropdown-toggle btn_category" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="o_range">CATEGORIES</span>
+                                    </button>
+                                    <ul class="dropdown-menu ">
+                                        <li v-for="category of listCategory" class="li_offc"><a
+                                                :href="'../pages/products.html?id=' + category.id">{{remove_(category.name)}}</a>
+                                        </li>
+                                        <li class="li_offc">
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=palit'"><img
+                                        src="../images/palit.png" alt="Palit"></a></li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=ASUS'"><img
+                                        src="../images/asus.png" alt="Asus"></a></li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=INTEL'"><img
+                                        src="../images/intelnewlogoblanco.png" alt="Intel"></a></li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=AMD'"><img
+                                        src="../images/amd.png" alt="AMD"></a></li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=MSI'"><img
+                                        src="../images/logoblancomsi_chc.png" alt="MSI"></a></li>
+                            <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=THERMALTAKE'"><img
+                                        src="../images/thermaltake.png" alt="Thermaltake"></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <!--fin menu bajo-->
+                <!--fin nav_bottom -->
+
+            </div>
+        </header>
+
+
+        <main>
+            <!--Section: Contact v.2-->
+            <div class="w-75 d-flex flex-column align-content-center justify-content-center mx-auto">
+            <section class="mb-4">
+
+                <!--Section heading-->
+                <h2 class="h1-responsive font-weight-bold text-center my-4 background_grey2 o_range">Contact us</h2>
+                <!--Section description-->
+                <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to
+                    contact us directly. Our team will come back to you within
+                    a matter of hours to help you.</p>
+                    <hr class="o_range mx-5">
+
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-9 mb-md-0 mb-5">
+                        <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+
+                            <!--Grid row-->
+                            <div class="row">
+
+                                <!--Grid column-->
+                                <div class="col-md-6">
+                                    <div class="md-form mb-0">
+                                        <input type="text" id="name" name="name" class="form-control">
+                                        <label for="name" class="">Your name</label>
+                                    </div>
+                                </div>
+                                <!--Grid column-->
+
+                                <!--Grid column-->
+                                <div class="col-md-6">
+                                    <div class="md-form mb-0">
+                                        <input type="text" id="email" name="email" class="form-control">
+                                        <label for="email" class="">Your email</label>
+                                    </div>
+                                </div>
+                                <!--Grid column-->
+
+                            </div>
+                            <!--Grid row-->
+
+                            <!--Grid row-->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="md-form mb-0">
+                                        <input type="text" id="subject" name="subject" class="form-control">
+                                        <label for="subject" class="">Subject</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grid row-->
+
+                            <!--Grid row-->
+                            <div class="row">
+
+                                <!--Grid column-->
+                                <div class="col-md-12">
+
+                                    <div class="md-form">
+                                        <textarea type="text" id="message" name="message" rows="2"
+                                            class="form-control md-textarea"></textarea>
+                                        <label for="message">Your message</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--Grid row-->
+
+                        </form>
+
+                        <div class="text-center text-md-left">
+                            <a class="btn btn-dark"
+                                onclick="document.getElementById('contact-form').submit();">Send</a>
+                        </div>
+                        <div class="status"></div>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-md-3 text-center">
+                        <ul class="list-unstyled mb-0">
+                            <li><i class="fas fa-map-marker-alt fa-2x"></i>
+                                <p>San Francisco, CA 94126, USA</p>
+                            </li>
+
+                            <li><i class="fas fa-phone mt-4 fa-2x"></i>
+                                <p>+ 01 234 567 89</p>
+                            </li>
+
+                            <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                                <p>contact@techtreasure.com</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+
+            </section>
+        </div>
+            <!--Section: Contact v.2-->
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center text-lg-start text-muted">
+            <!-- Section: Social media -->
+            <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+                <!-- Left -->
+                <div class="me-5 d-none d-lg-block">
+                    <span>Get connected with us on social networks:</span>
+                </div>
+                <!-- Left -->
+
+                <!-- Right -->
+                <div>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="" class="me-4 text-reset">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <!-- Right -->
+            </section>
+            <!-- Section: Social media -->
+
+            <!-- Section: Links  -->
+            <section class="">
+                <div class="container text-center text-md-start mt-5">
+                    <!-- Grid row -->
+                    <div class="row mt-3">
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                            <!-- Content -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                <i class="fas fa-gem me-3"></i>Tech Treasure
+                            </h6>
+                            <p>
+                                The technological future at your fingertips.
+                            </p>
+                            <p>
+                                We provide free advice through our communication channels.
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                About us?
+                            </h6>
+                            <p>
+                                <a href="#!" class="text-reset">Terms and Conditions</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Technical service</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Privacy Policy</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Contact us</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">
+                                Useful links
+                            </h6>
+                            <p>
+                                <a href="#!" class="text-reset">Pricing</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Settings</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Orders</a>
+                            </p>
+                            <p>
+                                <a href="#!" class="text-reset">Help</a>
+                            </p>
+                        </div>
+                        <!-- Grid column -->
+
+                        <!-- Grid column -->
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <!-- Links -->
+                            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                            <p><i class="fas fa-home me-3"></i> San Francisco, CA 94126, USA
+
+                            </p>
+                            <p>
+                                <i class="fas fa-envelope me-3"></i>
+                                contact@techtreasure.com                            </p>
+                            <p><i class="fas fa-phone me-3"></i> + 01 234 567 89</p>
+                            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                        </div>
+                        <!-- Grid column -->
+                    </div>
+                    <!-- Grid row -->
+                </div>
+            </section>
+            <!-- Section: Links  -->
+
+            <!-- Copyright -->
+            <div class="text-center p-4 w_hite">
+                © 2021 Copyright:
+                <a class="text-reset fw-bold w_hite" href="">MindHub</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+
+    </div> <!--.grid_container .app-->
+
+
+    <!--bootstrap axios vue-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../scripts/customer.js"></script>
+    <script>
+
+        document.getElementById('tab-login').addEventListener('click', function () {
+            document.getElementById('pills-login').classList.add('show', 'active');
+            document.getElementById('pills-register').classList.remove('show', 'active');
+        });
+
+        document.getElementById('tab-register').addEventListener('click', function () {
+            document.getElementById('pills-login').classList.remove('show', 'active');
+            document.getElementById('pills-register').classList.add('show', 'active');
+        });
+    </script>
+</body>
+
+</html>

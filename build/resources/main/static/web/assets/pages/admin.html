@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="shortcut icon" href="./card-icon.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link rel="stylesheet" href="../styles/admin.css">
+  <title>Administration Panel</title>
+</head>
+  <body>
+    <div class="layout" id="app">
+      <main class="flex-grow-1" v-cloak> 
+        <svg style="display:none;">
+            <symbol id="down" viewBox="0 0 16 16">
+              <polygon points="3.81 4.38 8 8.57 12.19 4.38 13.71 5.91 8 11.62 2.29 5.91 3.81 4.38" />
+            </symbol>
+            <symbol id="users" viewBox="0 0 16 16">
+              <path d="M8,0a8,8,0,1,0,8,8A8,8,0,0,0,8,0ZM8,15a7,7,0,0,1-5.19-2.32,2.71,2.71,0,0,1,1.7-1,13.11,13.11,0,0,0,1.29-.28,2.32,2.32,0,0,0,.94-.34,1.17,1.17,0,0,0-.27-.7h0A3.61,3.61,0,0,1,5.15,7.49,3.18,3.18,0,0,1,8,4.07a3.18,3.18,0,0,1,2.86,3.42,3.6,3.6,0,0,1-1.32,2.88h0a1.13,1.13,0,0,0-.27.69,2.68,2.68,0,0,0,.93.31,10.81,10.81,0,0,0,1.28.23,2.63,2.63,0,0,1,1.78,1A7,7,0,0,1,8,15Z" />
+            </symbol>
+            <symbol id="categories" viewBox="0 0 16 16">
+                <rect x="2" y="5" width="12" height="6" rx="1" ry="1" />
+                <rect x="7" y="2" width="2" height="3" />
+                <line x1="8" y1="2" x2="8" y2="5" />
+              </symbol>
+            <symbol id="charts" viewBox="0 0 16 16">
+              <polygon points="0.64 7.38 -0.02 6.63 2.55 4.38 4.57 5.93 9.25 0.78 12.97 4.37 15.37 2.31 16.02 3.07 12.94 5.72 9.29 2.21 4.69 7.29 2.59 5.67 0.64 7.38" />
+              <rect y="9" width="2" height="7" />
+              <rect x="12" y="8" width="2" height="8" />
+              <rect x="8" y="6" width="2" height="10" />
+              <rect x="4" y="11" width="2" height="5" />
+            </symbol>
+            <symbol id="product" viewBox="0 0 16 16">
+                <rect x="2" y="2" width="12" height="2" />
+                <rect x="1" y="4" width="1" height="8" />
+                <rect x="14" y="4" width="1" height="8" />
+                <rect x="2" y="12" width="12" height="2" />
+            </symbol>
+            <symbol id="settings" viewBox="0 0 16 16">
+              <rect x="9.78" y="5.34" width="1" height="7.97" />
+              <polygon points="7.79 6.07 10.28 1.75 12.77 6.07 7.79 6.07" />
+              <rect x="4.16" y="1.75" width="1" height="7.97" />
+              <polygon points="7.15 8.99 4.66 13.31 2.16 8.99 7.15 8.99" />
+              <rect x="1.28" width="1" height="4.97" />
+              <polygon points="3.28 4.53 1.78 7.13 0.28 4.53 3.28 4.53" />
+              <rect x="12.84" y="11.03" width="1" height="4.97" />
+              <polygon points="11.85 11.47 13.34 8.88 14.84 11.47 11.85 11.47" />
+            </symbol>
+            <symbol id="options" viewBox="0 0 16 16">
+              <path d="M8,11a3,3,0,1,1,3-3A3,3,0,0,1,8,11ZM8,6a2,2,0,1,0,2,2A2,2,0,0,0,8,6Z" />
+              <path d="M8.5,16h-1A1.5,1.5,0,0,1,6,14.5v-.85a5.91,5.91,0,0,1-.58-.24l-.6.6A1.54,1.54,0,0,1,2.7,14L2,13.3a1.5,1.5,0,0,1,0-2.12l.6-.6A5.91,5.91,0,0,1,2.35,10H1.5A1.5,1.5,0,0,1,0,8.5v-1A1.5,1.5,0,0,1,1.5,6h.85a5.91,5.91,0,0,1,.24-.58L2,4.82A1.5,1.5,0,0,1,2,2.7L2.7,2A1.54,1.54,0,0,1,4.82,2l.6.6A5.91,5.91,0,0,1,6,2.35V1.5A1.5,1.5,0,0,1,7.5,0h1A1.5,1.5,0,0,1,10,1.5v.85a5.91,5.91,0,0,1,.58.24l.6-.6A1.54,1.54,0,0,1,13.3,2L14,2.7a1.5,1.5,0,0,1,0,2.12l-.6.6a5.91,5.91,0,0,1,.24.58h.85A1.5,1.5,0,0,1,16,7.5v1A1.5,1.5,0,0,1,14.5,10h-.85a5.91,5.91,0,0,1-.24.58l.6.6a1.5,1.5,0,0,1,0,2.12L13.3,14a1.54,1.54,0,0,1-2.12,0l-.6-.6a5.91,5.91,0,0,1-.58.24v.85A1.5,1.5,0,0,1,8.5,16ZM5.23,12.18l.33.18a4.94,4.94,0,0,0,1.07.44l.36.1V14.5a.5.5,0,0,0,.5.5h1a.5.5,0,0,0,.5-.5V12.91l.36-.1a4.94,4.94,0,0,0,1.07-.44l.33-.18,1.12,1.12a.51.51,0,0,0,.71,0l.71-.71a.5.5,0,0,0,0-.71l-1.12-1.12.18-.33a4.94,4.94,0,0,0,.44-1.07l.1-.36H14.5a.5.5,0,0,0,.5-.5v-1a.5.5,0,0,0-.5-.5H12.91l-.1-.36a4.94,4.94,0,0,0-.44-1.07l-.18-.33L13.3,4.11a.5.5,0,0,0,0-.71L12.6,2.7a.51.51,0,0,0-.71,0L10.77,3.82l-.33-.18a4.94,4.94,0,0,0-1.07-.44L9,3.09V1.5A.5.5,0,0,0,8.5,1h-1a.5.5,0,0,0-.5.5V3.09l-.36.1a4.94,4.94,0,0,0-1.07.44l-.33.18L4.11,2.7a.51.51,0,0,0-.71,0L2.7,3.4a.5.5,0,0,0,0,.71L3.82,5.23l-.18.33a4.94,4.94,0,0,0-.44,1.07L3.09,7H1.5a.5.5,0,0,0-.5.5v1a.5.5,0,0,0,.5.5H3.09l.1.36a4.94,4.94,0,0,0,.44,1.07l.18.33L2.7,11.89a.5.5,0,0,0,0,.71l.71.71a.51.51,0,0,0,.71,0Z" />
+            </symbol>
+            <symbol id="collapse" viewBox="0 0 16 16">
+              <polygon points="11.62 3.81 7.43 8 11.62 12.19 10.09 13.71 4.38 8 10.09 2.29 11.62 3.81" />
+            </symbol>
+            <symbol id="logout" viewBox="0 0 24 24">
+                <path d="M19 13H7a1 1 0 0 1 0-2h12a1 1 0 0 1 0 2zM16.707 8.293a1 1 0 0 1 1.414 1.414L17.414 11H21a1 1 0 0 1 0 2h-3.586l1.293 1.293a1 1 0 0 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0z"/>
+              </symbol>
+          </svg>
+
+          <!-- <button class="btn bg-secondary mt-5" type="button" @click="toggleHeaderCollapse" :aria-expanded="isHeaderCollapsed.toString()" aria-controls="headerCollapse">
+            <span aria-hidden="true" class="icon-bars" v-if="isHeaderCollapsed">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path d="M5.354 4.354a.5.5 0 0 1 0 .707L8.707 8l-3.353 3.353a.5.5 0 0 1-.708-.708l3.646-3.647a.5.5 0 0 1 0-.707L5.646 4.354a.5.5 0 0 1 0-.707z"/>
+                  </svg>
+            </span>
+            <span aria-hidden="true" v-else>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                <path d="M1 4h14L8 11 1 4z"/>
+              </svg>
+            </span>
+          </button> -->
+
+          <header class="page-header">
+            <nav>
+              <ul class="admin-menu">
+                <li class="menu-heading pointer" @click="showSection('index')">
+                  <h3 class="fw-bolder text-light">Home</h3>
+                </li>
+                <li class="pointer" @click="showSection('listCustomer')">
+                    <a href="#">
+                    <svg>
+                      <use xlink:href="#users"></use>
+                    </svg>
+                    <span>Customers</span>
+                    </a>
+                </li>
+                <li class="pointer" @click="showSection('listProduct')">
+                    <a href="#">
+                    <svg>
+                      <use xlink:href="#product"></use>
+                    </svg>
+                    <span>Products</span>
+                    </a>
+                </li>
+                <li class="pointer" @click="showSection('listCategories')">
+                    <a href="#">
+                    <svg>
+                      <use xlink:href="#categories"></use>
+                    </svg>
+                    <span>Categories</span>
+                    </a>
+                </li>
+                <li>
+                    <button @click="logOut">
+                      <svg>
+                        <use xlink:href="#logout"></use>
+                      </svg>
+                      <span>Log Out</span>
+                    </button>
+                  </li>
+              </ul>
+            </nav>
+          </header>
+
+          <section class="page-content">
+
+            <section v-if="currentSection != 'customer' && currentSection != 'product' && currentSection != 'categories' || currentSection == 'index'" class="d-flex flex-column flex-wrap justify-content-center align-items-center">
+
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <h2 class="text-center fw-bold mt-2">Welcome Admin</h2>
+                        <p class="text-center fs-3">Please select what you want to do.</p>
+
+                        <div class="d-flex flex-wrap align-items-center justify-content-center">
+                            <div class="card-admin text-light d-flex flex-column pointer" @click="showSection('listCustomer')">
+                                <h4>Customer</h4>
+                                <p>Update and delete</p>
+                            </div>
+                            <div class="card-admin text-light d-flex flex-column pointer" @click="showSection('listProduct')">
+                                <h4>Product</h4>
+                                <p>Create, update and activate/deactivate</p>
+                            </div>
+                            <div class="card-admin text-light d-flex flex-column pointer" @click="showSection('listCategories')">
+                                <h4>Category</h4>
+                                <p>Update and activate/deactivate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            </section>
+
+            <div v-if="currentSection == 'listCustomer'">
+                <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+                        <!-- <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h2 class="text-center">Create Product</h2>
+                            <button type="button" class="btn btn-success text-center mb-3" @click="showSection('createProd')">Create</button>
+                        </div> -->
+                        <div>
+                            <h3 class="mt-3 text-center">Customers</h3>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" v-model="searchCustomer" @input="searchCustomers" placeholder="Search by email">
+                                <button class="btn btn-outline-secondary" type="button" @click="searchCustomers">Search</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" v-if="filteredCustomers.length > 0 || searchCustomer.length == 0">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Last name</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Telephone</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="customer in filteredCustomers.length > 0 ? filteredCustomers : customers">
+                                        <td>{{ customer.id }}</td>
+                                        <td>{{ customer.name }}</td>
+                                        <td>{{ customer.lastName }}</td>
+                                        <td>{{ customer.email }}</td>
+                                        <td>{{ customer.address.join(', ') }}</td>
+                                        <td>{{ customer.telephone.join(', ') }}</td>
+                                        <td class="d-flex">
+                                            <button type="button" class="btn btn-primary me-1" @click="loadUpdateCustomer(customer)">Update</button>
+                                            <button type="button" class="btn btn-danger" @click="deleteCustommer(customer)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else>
+                            <p class="text-center fs-3 text-danger">No customers found.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="grid" v-if="currentSection == 'updateCustomer'">
+            <article>
+                <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form class="shadow p-3 mb-5 bg-white rounded">
+                            <div>
+                                <h2 class="text-center">Update Personal Information</h2>
+                            </div>
+                            <div class="mb-1">
+                                <label for="nameCustomer" class="form-label">Name:</label>
+                                <input type="text" class="form-control"  id="nameCustomer" name="nameCustomer" v-model="nameCustomer" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3" @click="updateName">Update</button>
+                            <div class="mb-1">
+                                <label for="lastName" class="form-label">Last name:</label>
+                                <input type="text" class="form-control"  id="lastName" name="lastName" v-model="lastName" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3" @click="updateLastName">Update</button>
+                            <div class="mb-1">
+                                <label for="addressCustomer" class="form-label">Address:</label>
+                                <input type="text" class="form-control"  id="addressCustomer" name="addressCustomer" v-model="addressCustomer" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3 me-1" @click="addAddress">Add</button><button type="button" class="btn btn-danger mb-3" @click="removeAddress">Remove</button>
+                            <div class="mb-1">
+                                <label for="telCustomer" class="form-label">Telephone:</label>
+                                <input type="text" class="form-control"  id="telCustomer" name="telCustomer" v-model="telCustomer" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3 me-1" @click="addTel">Add</button><button type="button" class="btn btn-danger mb-3" @click="removeTel">Remove</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </article>
+            <article>
+                <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <form class="shadow p-3 mb-5 bg-white rounded">
+                            <div>
+                                <h2 class="text-center">Update Password and Email</h2>
+                            </div>
+                            <div class="mb-1">
+                                <label for="pass" class="form-label">Old Password:</label>
+                                <input type="text" class="form-control"  id="oldPass" name="oldPass" v-model="oldPass" required>
+                            </div>
+                            <div class="mb-1">
+                                <label for="pass" class="form-label">Password:</label>
+                                <input type="text" class="form-control"  id="pass" name="pass" v-model="pass" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3" @click="updatePassword">Update</button>
+                            <div class="mb-1">
+                                <label for="oldEmailCustomer" class="form-label">Old Email:</label>
+                                <input type="email" class="form-control"  id="oldEmailCustomer" name="oldEmailCustomer" v-model="oldEmailCustomer" required>
+                            </div>
+                            <div class="mb-1">
+                                <label for="emailCustomer" class="form-label">Email:</label>
+                                <input type="email" class="form-control"  id="emailCustomer" name="emailCustomer" v-model="emailCustomer" required>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-3" @click="updateEmail">Update</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </article>
+        </section>
+
+            <div v-if="currentSection == 'listProduct'">
+                    <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-9">
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <h2 class="text-center">Create Product</h2>
+                                <button type="button" class="btn btn-success text-center mb-3" @click="showSection('createProd')">Create</button>
+                            </div>
+                            <div>
+                                <h3 class="mt-3 text-center">Products</h3>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" v-model="searchQuery" @input="searchProducts" placeholder="Search by name">
+                                    <button class="btn btn-outline-secondary" type="button" @click="searchProducts">Search</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive" v-if="filteredProducts.length > 0 || searchQuery.length == 0">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Stock</th>
+                                            <th>Brand</th>
+                                            <th>Category</th>
+                                            <th>Active</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="product in filteredProducts.length > 0 ? filteredProducts : products">
+                                            <td>{{ product.id }}</td>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>{{ product.stock }}</td>
+                                            <td>{{  formatBrand(product.brand) }}</td>
+                                            <td>{{ getCategoryName(product.categoryId) }}</td>
+                                            <td>{{ product.active ? "Yes" : "No" }}</td>
+                                            <td class="d-flex">
+                                                <button type="button" class="btn btn-primary me-1" @click="loadUpdateSection(product)">Update</button>
+                                                <button type="button" class="btn btn-danger" @click="loadDeactivateSection(product)">Deactivate</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-else>
+                                <p class="text-center fs-3 text-danger">No products found.</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="grid" v-if="currentSection == 'createProd'">
+                <article>
+                    <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <form class="shadow p-3 mb-5 bg-white rounded">
+                                <div>
+                                    <h2 class="text-center">Create</h2>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name" v-model="nameProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="price" class="form-label">Price:</label>
+                                    <input type="number" class="form-control" id="price" name="price" v-model="priceProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="stock" class="form-label">Stock:</label>
+                                    <input type="text" class="form-control" id="stock" name="stock" v-model="stockProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="brand" class="form-label">Brand:</label>
+                                    <select class="form-select" v-model="brandProduct" required>
+                                        <option v-for="brand in brands" >{{ brand }}</option>
+                                    </select>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="description" class="form-label">Description:</label>
+                                    <textarea type="text" class="form-control" id="description" name="description" rows="3" v-model="descriptionProduct" required></textarea>
+                                </div>
+
+                                <div class="mb-1">
+                                    <label for="imageUrl" class="form-label">Image URL:</label>
+                                    <input type="text" class="form-control" id="imageUrl" name="imageUrl" v-model="imageURL" required>
+                                </div>
+
+                                <div class="mb-1">
+                                    <label for="categoryID" class="form-label">Category:</label>
+                                    <select class="form-select" v-model="categoryProduct" required>
+                                        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+                                    </select>
+                                </div>
+                
+                                <button type="button" class="btn btn-primary mb-3" @click="createProduct">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid" v-if="currentSection == 'updateProd'">
+                <article>
+                    <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <form class="shadow p-3 mb-5 bg-white rounded">
+                                <div>
+                                    <h2 class="text-center">Update</h2>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="idP" class="form-label">ID:</label>
+                                    <input type="text" class="form-control" id="idP" v-model="idProduct" readonly>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name" v-model="nameProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="price" class="form-label">Price:</label>
+                                    <input type="number" class="form-control" id="price" name="price" v-model="priceProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="stock" class="form-label">Stock:</label>
+                                    <input type="text" class="form-control" id="stock" name="stock" v-model="stockProduct" required>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="brand" class="form-label">Brand:</label>
+                                    <select class="form-select" v-model="brandProduct" required>
+                                        <option v-for="brand in brands" >{{ brand }}</option>
+                                    </select>
+                                </div>
+                
+                                <div class="mb-1">
+                                    <label for="description" class="form-label">Description:</label>
+                                    <textarea type="text" class="form-control" id="description" name="description" rows="3" v-model="descriptionProduct" required></textarea>
+                                </div>
+
+                                <div class="mb-1">
+                                    <label for="imageUrl" class="form-label">Image URL:</label>
+                                    <input type="text" class="form-control" id="imageUrl" name="imageUrl" v-model="imageURL" required>
+                                </div>
+
+                                <div class="mb-1">
+                                    <label for="categoryID" class="form-label">Category:</label>
+                                    <select class="form-select" v-model="categoryProduct" required>
+                                        <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+                                    </select>
+                                </div>
+                
+                                <button type="button" class="btn btn-primary mb-3" @click="updateProduct">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </article>
+            </section>
+            
+            <section class="grid" v-if="currentSection == 'deactiveProd'">
+                <article class="d-flex flex-column align-items-center justify-content-center mb-4">
+
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form class="shadow bg-white rounded p-3">
+                                    <h2 class="mt-3 text-center">Activate / Deactivate</h2>
+            
+                                    <div class="mb-1">
+                                        <label for="idProduct" class="form-label w-75">ID product:</label>
+                                        <input type="text" placeholder="Enter ID" id="idProduct" name="idProduct" class="form-control" v-model="idProductToDeactivate" readonly>
+                                    </div>
+                                        
+                                    <div>
+                                        <p class="mt-3 fs-3 text-center">Yes: Deactivate</p>
+                                        <p class="mt-3 fs-3 text-center">No: Activate</p>
+                                    </div>
+                                    <div class="mb-1 d-flex align-items-center justify-content-center">
+                                        <label class="rocker rocker-small">
+                                            <input type="checkbox" v-model="deactProduct">
+                                            <span class="switch-left">Yes</span>
+                                            <span class="switch-right">No</span>
+                                        </label>
+                                    </div>
+                                    <div class="text-center"><button type="button" class="btn btn-primary mb-3" @click="deactivateProduct">Send</button></div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                </article>
+
+            </section>
+
+
+            <div v-if="currentSection == 'listCategories'">
+                <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+                        <!-- <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h2>Create Category</h2>
+                            <button type="button" class="btn btn-success text-center mb-3" @click="showSection('createCategory')">Create</button>
+                        </div> -->
+                        <div>
+                            <h3 class="mt-3 text-center">Categories</h3>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" v-model="searchCategory" @input="searchCategories" placeholder="Search by category">
+                                <button class="btn btn-outline-secondary" type="button" @click="searchCategories">Search</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" v-if="filteredCategories.length > 0 || searchCategory.length == 0">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Active</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="category in filteredCategories.length > 0 ? filteredCategories : categories">
+                                        <td>{{ category.id }}</td>
+                                        <td>{{ formatCategoryName(category.name) }}</td>
+                                        <td>{{ category.description }}</td>
+                                        <td>{{ category.active ? 'Yes' : 'No' }}</td>
+                                        <td class="d-flex">
+                                            <button type="button" class="btn btn-primary me-1" @click="loadUpdateCategory(category)">Update</button>
+                                            <button type="button" class="btn btn-danger" @click="loadDeactivateCategory(category)">Deactivate</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div v-else>
+                            <p class="text-center fs-3 text-danger">No categories found.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+                
+            <!--<section class="grid" v-if="currentSection == 'createCategory'">
+
+                <article class="d-flex flex-column align-items-center justify-content-center mb-4">
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form class="shadow p-3 mb-5 bg-white rounded">
+                                    <h2 class="text-center mt-3 text-center">Create</h2>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name:</label>
+                                        <input type="text" class="form-control" id="name" name="name" v-model="categoryName" required>
+                                    </div>
+                    
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description:</label>
+                                        <textarea class="form-control" id="description" name="description" v-model="categoryDescription" style="width: 100%;" required></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-primary mb-3" @click="createCategory">Create</button>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                </article>
+            </section>-->
+
+            <section class="grid" v-if="currentSection == 'updateCategory'">
+                <article>
+                    <div class="container mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <form class="shadow p-3 mb-5 bg-white rounded">
+                                <div>
+                                    <h2 class="text-center">Update</h2>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="idC" class="form-label">ID:</label>
+                                    <input type="text" class="form-control" id="idC" v-model="idCategory" readonly>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="descriptionCategory" class="form-label">Description:</label>
+                                    <textarea type="text" class="form-control" id="descriptionCategory" name="descriptionCategory" rows="3" v-model="descriptionCategory" required></textarea>
+                                </div>
+                
+                                <button type="button" class="btn btn-primary mb-3" @click="updateCategory">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid" v-if="currentSection == 'deactiveCategory'">
+                <article class="d-flex flex-column align-items-center justify-content-center mb-4">
+
+                    <div class="container mt-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <form class="shadow bg-white rounded p-3">
+                                    <h2 class="mt-3 text-center">Activate / Deactivate</h2>
+            
+                                    <div class="mb-1">
+                                        <label for="idCategory" class="form-label w-75">ID category:</label>
+                                        <input type="text" placeholder="Enter ID" id="idCategory" name="idCategory" class="form-control" v-model="idCategoryToDeactivate" readonly>
+                                    </div>
+                                        
+                                    <div>
+                                        <p class="mt-3 fs-3 text-center">Yes: Deactivate</p>
+                                        <p class="mt-3 fs-3 text-center">No: Activate</p>
+                                    </div>
+                                    <div class="mb-1 d-flex align-items-center justify-content-center">
+                                        <label class="rocker rocker-small">
+                                            <input type="checkbox" v-model="deactCategory">
+                                            <span class="switch-left">Yes</span>
+                                            <span class="switch-right">No</span>
+                                        </label>
+                                    </div>
+                                    <div class="text-center"><button type="button" class="btn btn-primary mb-3" @click="deactivateCategory">Send</button></div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                </article>
+
+            </section>
+
+
+          </section>
+      </main>
+    </div>
+  </body>
+      <footer>
+      </footer>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../scripts/admin.js"></script>
+</body>
+</html>

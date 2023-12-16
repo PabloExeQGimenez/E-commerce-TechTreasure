@@ -1,0 +1,35 @@
+@import "colors.css";
+
+.detailImg{
+    width: 5rem;
+    height: 5rem;
+}
+
+.imgp{
+    width: 30rem;
+}
+
+.text-custom-color{
+    color: aqua;
+}
+
+.border-orange{
+    border-color: #fd611a !important;
+}
+
+.border-grey2{
+    border-color: #A48A7B !important;
+}
+
+.priceW{
+    width: 100vw;
+}
+
+@media screen and (min-width: 1024px){
+    .priceW{
+        width: 35vw;
+    }
+    .bgCard{
+        background-color: white;
+    }
+}

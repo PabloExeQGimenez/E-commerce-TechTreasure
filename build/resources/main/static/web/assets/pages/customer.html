@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your account</title>
+  <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://kit.fontawesome.com/1e025ea79c.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body class="border-primary bg-secondary">
+  <div id="app" class="grid_container">
+
+    <header>
+      <!-- <div class="nav_top container">
+
+        <ul class="ul_top">
+          <li v-if="loggedIn"><span class="li_login_logout">Welcome User! </span></li>
+          <li v-if="loggedIn">
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g">
+              <span class="li_login_logout"><i class="o_range bi bi-box-arrow-in-right"></i> Login/Register</span>
+            </button>
+          </li>
+          <li v-if="!loggedIn"><span class="li_login_logout">Hello! {{name}} {{lastName}} </span></li>
+          <li v-if="!loggedIn"><a href="./assets/pages/customer.html"><span class="li_login_logout"><i
+                  class="bi bi-person-circle"></i>Your account</span></a></li>
+          <li v-if="!loggedIn"><a href="./assets/pages/customer.html"><span class="li_login_logout"><i
+                  class="o_range bi bi-star"></i>Your Favorites</span></a></li>
+          <li v-if="!loggedIn"><button type="button" class="btn " @click="logout">
+              <span class="li_login_logout"><i class="bi bi-box-arrow-in-left"></i>See you later</span>
+            </button>
+          </li>
+        </ul>
+
+
+
+      </div> nav_top -->
+      <div class="background_grey2">
+
+        <div class="nav_center container background_grey2 ">
+          <div class="m_enu">
+            <button class="btn_menu " type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
+              aria-controls="staticBackdrop">
+              <i class="fa-solid fa-bars o_range mx-2"></i>
+            </button>
+          </div>
+          <div class="offcanvas offcanvas-start menu_offcanvas" data-bs-backdrop="static" tabindex="-1"
+            id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas-header">
+              <h4 class="offcanvas-title text-white" id="staticBackdropLabel" v-if="loggedIn">Welcome User! <i
+                  class="bi bi-box-arrow-in-right o_range"></i><button type="button" class="btn" data-bs-toggle="modal"
+                  data-bs-target="#modal_login" aria-label="g" v-if="loggedIn">
+                  <span class="li_login_logout text-white"></i>
+                    Login/Register</span>
+                </button>
+              </h4>
+
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <hr class="o_range mx-1">
+
+            <div class="offcanvas-body">
+              <div class="container menu_lateral">
+              
+                <ul class="ul_offc m-0">
+                  <h5 class="offcanvas-title text-center text-bg-secondary rounded-4">Category</h5>
+                  <li v-for="category of listCategory" class="menu_cat_lateral"><a
+                      :href="'../pages/products.html?id=' + category.id">{{remove_(category.name)}}</a></li>
+
+                </ul>
+                <hr class="o_range mx-5">
+
+              </div>
+
+            </div>
+          </div>
+
+          <a href="../../index.html">
+            <h1 class="w_hite">TECH<span class="o_range"><img src="../images/logo.png" alt=""></span>REASURE
+            </h1>
+          </a>
+          <!-- search -->
+          <div class="">
+            <form role="search">
+              <input v-model="inputSearch" class="form-control me-2 s_earch_imput" type="search"
+                placeholder="What you were looking for, find it here!" aria-label="Search">
+            </form>
+            <div class="position-absolute top-10 start-30 w-50 s_earch" v-show="inputSearch !== ''">
+              {{filter}}
+              <table v-if="filterProducts.length > 0" class="table table-striped">
+                <tr v-for="produ in filterProducts.slice(0, 7)">
+                  <td><a :href="'../pages/detailProduct.html?id=' + produ.id">{{ produ.name }}</a></td>
+                  <td><img :src="produ.imageURL" class="" :alt="produ.name"></td>
+                </tr>
+              </table>
+              <p class="alert alert-warning" v-else>No found result</p>
+            </div>
+          </div>
+          <!-- search -->
+          <!--btns medio-->
+          <div class="menu_center">
+            <button class="btn position-relative" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasScrolling" aria-controls="offcanvasBottom"><i class="o_range bi bi-cart3 "></i>
+              <span class="cart-badge" id="car_account">
+                {{items}}
+              </span>
+            </button>
+          </div>
+
+        </div>
+        <!--fin nav_center-->
+        <!--menu bajo-->
+        <div class="background_grey3">
+          <div class="nav_bottom background_grey3 container">
+            <ul class="ul_bottom background_grey3 ">
+              <li class="libottom1">
+                <div class="dropdown">
+                  <button class="btn border-0 dropdown-toggle btn_category" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="o_range">CATEGORIES</span>
+                  </button>
+                  <ul class="dropdown-menu ">
+                    <li v-for="category of listCategory" class="li_offc"><a
+                        :href="'../pages/products.html?id=' + category.id">{{remove_(category.name)}}</a></li>
+                    <li class="li_offc">
+                  </ul>
+                </div>
+              </li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=palit'"><img
+                    src="../images/palit.png" alt="Palit"></a></li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=ASUS'"><img
+                    src="../images/asus.png" alt="Asus"></a></li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=INTEL'"><img
+                    src="../images/intelnewlogoblanco.png" alt="Intel"></a></li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=AMD'"><img
+                    src="../images/amd.png" alt="AMD"></a></li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=MSI'"><img
+                    src="../images/logoblancomsi_chc.png" alt="MSI"></a></li>
+              <li class="libottom3"><a :href="'../pages/productsBrand.html?brand=THERMALTAKE'"><img
+                    src="../images/thermaltake.png" alt="Thermaltake"></a></li>
+
+            </ul>
+          </div>
+        </div>
+        <!--fin menu bajo-->
+        <!--fin nav_bottom -->
+
+      </div>
+    </header>
+
+    <main class="min-vh-auto">
+      <div class="container">
+        <div class="row mt-3 g_rey2 ">
+          <h2 class=" h1-responsive font-weight-bold text-center my-4 background_grey2 o_range rounded-3" v-if="!loggedIn">Hello! {{name}} </h3>
+
+        </div>
+        <div class="row">
+          <div class="col-md-3 ">
+            <ul class="menu_user">
+
+              <li v-if="loggedIn"><span class="li_login_logout">Welcome User! </span></li>
+              <li v-if="loggedIn">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal_login" aria-label="g">
+                  <span class="li_login_logout"><i class="o_range bi bi-box-arrow-in-right"></i> Login/Register</span>
+                </button>
+              </li>
+              
+              <li v-if="!loggedIn"><a href="./assets/pages/favorites.html"><span class="li_login_logout"><i
+                      class="o_range bi bi-star"></i>Your Favorites</span></a></li>
+
+              <li><a href="" @click.prevent="mostrarDatosPersonales"><i class="bi bi-person-bounding-box o_range"></i> Personal information</a></li>
+              <li><a href="" @click.prevent="showPurchaseOrders"><i class="bi bi-bag-check o_range"></i> Purchase Orders</a></li>
+             <li><a href=" https://www.correoargentino.com.ar/seguimiento-de-envios" target="_blank"><i class="bi bi-truck"></i> Shipment tracking</a></li>
+             <li><a href="" @click.prevent="showPaymentsm" class="text-white"><i class="bi bi-cash-coin o_range"></i> Your payments</a></li>
+              <li v-if="!loggedIn"><button type="button" class="btn " @click="logout">
+                  <span class="li_login_logout text-white"><i class="bi bi-box-arrow-in-left o_range"></i> See you later</span>
+
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-9 ">
+            <div v-if="showPayments">
+
+             <p>Record a payment in your name</p>
+                
+                  
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Cardholder's Name</span>
+                    <input type="text" class="form-control" placeholder="" v-model="cardHolder" />
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Card Number</span>
+                    <input type="text" class="form-control" placeholder="" v-model="cardNumber"
+                    @input="formatCardNumber"/>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <div class="d-flex w-50">
+                      <span class="input-group-text me-1" id="basic-addon1">Expiration</span>
+                      <input type="text" class="form-control me-1" placeholder="MM/YY" v-model="expiration" @input="formatExpiration" />
+                    </div>
+                    <div class="d-flex w-50">
+                      <span class="input-group-text ms-2 me-1" id="basic-addon1">CVV</span>
+                      <input type="password" class="form-control me-1" placeholder="&#9679;&#9679;&#9679;" v-model="cvc" maxlength="3"
+                      @input="handleCVCInput" />
+                    </div>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Description</span>
+                    <input type="textarea" class="form-control" placeholder="" rows="3"
+                    v-model="description"/>
+                  </div>
+
+                  <div class="input-group mb-3">
+                    <label class="input-group-text" for="shippingAddress">Address Shipping</label>
+                    <select id="shippingAddress" class="form-control" v-model="selectedShippingAddress">
+                        <option value="" disabled>Select an address</option>
+                        <option v-for="address in shippingAddresses" :value="address">
+                            {{ address }}
+                        </option>
+                    </select>
+                  </div>
+
+                  <div class="input-group mb-3 ">
+                    <span class="input-group-text" id="basic-addon1">U$D</span>
+                    <input type="number" v-model="totalAmount" readonly>
+                  </div>
+                
+                  <button type="button" class="btn btn-dark btn-block btn-lg" @click="payWithCard">Pay</button>
+             
+
+            </div>
+            <div v-if="welcome" >
+              - Does not have pending payments
+              <hr>
+              - Does not have pending shipments
+
+            </div>
+            <div v-if="personalData" class="">
+
+              <div class="input-group mb-3 ">
+                <span class="input-group-text" id="basic-addon1">Name</span>
+                <input type="text" class="form-control" placeholder="" aria-label="Username"
+                  aria-describedby="basic-addon1" v-model="name" /> <button type="button"  class="btn btn-dark">Modify</button>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Lastname</span>
+                <input type="text" class="form-control" placeholder="" aria-label="Username"
+                  aria-describedby="basic-addon1" v-model="lastName" /><button type="button"  class="btn btn-dark">Modify</button>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Email</span>
+                <input type="text" class="form-control" placeholder="" aria-label="Username"
+                  aria-describedby="basic-addon1" v-model="email" /><button type="button"  class="btn btn-dark">Modify</button>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Address</span>
+                <input type="text" class="form-control" placeholder="" aria-label="Username"
+                  aria-describedby="basic-addon1" v-model="address" /><button type="button"  class="btn btn-dark">Modify</button>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Telephone</span>
+                <input type="text" class="form-control" placeholder="" aria-label="Username"
+                  aria-describedby="basic-addon1" v-model="telephone" /><button type="button"  class="btn btn-dark">Modify</button>
+              </div>
+
+            </div>
+            <!-- <p v-else>Selecciona un enlace para ver los datos personales.</p> -->
+
+            <div v-if="purchaseOrders">
+
+              <div class="accordion-item mb-5 ms-5 col-8">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed bg-secondary-subtle my-3 ps-3 border rounded-3" style="height: 3.5rem; " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    ADD COMMENT 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-down ms-2" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"/>
+                    </svg>
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse p-3 border rounded-1 border-secondary  " aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <h6 class="mt-3">Select Product:</h6>
+                    <select v-model="commentProduct" class="form-select" aria-label="Default select example">
+                      <option  v-for="productComment of historyPurchase" :key="productComment.id" :value="productComment.id">{{productComment.name}}</option>
+                    </select>
+                    <div class="mb-3">
+                      <h6 class="mt-3">Rating:</h6>
+                      <input v-model="amountComment" type="number" class="form-control" id="exampleFormControlInput1">
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                      <textarea v-model="descriptionComment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center">
+                      <button type="button" class="m-3 d-block mx-auto btn btn-primary fw-bold" @click.prevent="addComment()">
+                          Confirm Comment
+                      </button>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+              <div v-for="product of historyPurchase" >
+                <table class="table align-middle mb-0 bg-w pb-3">
+                  <thead class="bg-light">
+                    <tr>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Paid</th>
+                      <th>Delivered</th>
+                      <th>Coment</th>
+                      <th>Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="px-1">
+                        <div class="d-flex align-items-center" style="width: 15rem;">
+                          <img :src="product.imageURL" alt="" style="width: 85px; height: 85px"
+                            class="rounded-circle" />
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1">{{product.name}}</p>
+                            <p class="text-muted mb-0">{{product.brand}}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-1">
+                        <p class="fw-normal mb-1" style="width: 8rem;">U$D {{product.price}}</p>
+                      </td>
+                      <td class="px-1">
+                        <p class="fw-normal mb-1"> <i class="bi bi-check2-circle o_range "></i></p>
+
+                      </td>
+                      <td class="px-1">
+                        <p class="fw-normal mb-1"> <i class="bi bi-check2-circle o_range "></i></p>
+                      </td>
+                      <td class="px-1">
+                        <p class="fw-normal mb-1">{{limitWords(product.reviews[0].comment, 10)}}</p>
+                        <button type="button" class="m-3 d-block mx-auto btn btn-primary fw-bold" @click.prevent="handleDeleteComment(product.reviews)">
+                          Delete Comment
+                        </button>
+                      </td>
+                      <td class="px-1">
+                        <p class="fw-normal mb-1 o_range font_score">{{product.reviews[0].rating}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade " id="modal_login" tabindex="-1" aria-hidden="true" aria-labelledby="modalTitle">
+        <div class="modal-dialog ">
+          <div class="modal-content modal_login">
+            <!-- <div class="modal-header ">
+              
+            </div> -->
+            <div class="modal-body ">
+              <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+              <!-- Pills navs -->
+              <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link active btn_login" id="tab-login" data-mdb-pill-init href="#pills-login" role="tab"
+                    aria-controls="pills-login" aria-selected="true">Login</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <a class="nav-link  btn_sign mx-3" id="tab-register" data-mdb-pill-init href="#pills-register"
+                    role="tab" aria-controls="pills-register" aria-selected="false">Register</a>
+                </li>
+              </ul>
+              <!-- Pills navs -->
+
+              <!-- Pills content -->
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                  <form id="loginForm">
+                    <div class="text-center mb-3">
+                      <p>Sign in with:</p>
+                    </div>
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="email" id="loginName" class="form-control" v-model="email" required
+                        placeholder="Name">
+                      <!-- <label class="form-label" for="loginName">Email or username</label> -->
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="password" id="loginPassword" class="form-control" v-model="password" required
+                        placeholder="Password">
+                    </div>
+
+                    <!-- 2 column grid layout -->
+                    <div class="row mb-4">
+                      <div class="col-md-6 d-flex justify-content-center">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-3 mb-md-0">
+                          <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked>
+                          <label class="form-check-label" for="loginCheck"> Remember me </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 d-flex justify-content-center">
+                        <!-- Simple link -->
+                        <a href="#!">Forgot password?</a>
+                      </div>
+
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="button" class="btn btn-block mb-4 btn_sign mx-auto" @click="login"
+                      data-bs-dismiss="modal_login">Sign in</button>
+
+                    <!-- Register buttons -->
+                    <div class="text-center">
+                      <p>Not a member? <a href="#!">Register</a></p>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+                  <form id="registerForm" class="text-center">
+
+                    <div class="mb-3">
+                      <p>Sign up with:</p>
+                    </div>
+
+                    <!-- Name input -->
+                    <div class="form-outline mb-1">
+                      <input type="text" id="registerName" class="form-control" placeholder="Name"
+                        v-model="nameRegister">
+                    </div>
+
+                    <!-- Lastname input -->
+                    <div class="form-outline mb-1">
+                      <input type="text" id="registerUsername" class="form-control" placeholder="Lastname"
+                        v-model="lastNameRegister">
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-1">
+                      <input type="email" id="registerEmail" class="form-control" placeholder="Email"
+                        v-model="emailRegister">
+                    </div>
+
+                    <!-- Address input -->
+                    <div class="form-outline mb-2">
+                      <input type="text" id="registerAddress" class="form-control" placeholder="Address"
+                        v-model="addressRegister">
+                    </div>
+
+                    <!-- Telephone input -->
+                    <div class="form-outline mb-2">
+                      <input type="text" id="registerTelephone" class="form-control" placeholder="Telephone"
+                        v-model="telephoneRegister">
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-2">
+                      <input type="password" id="registerPassword" class="form-control" placeholder="Password"
+                        v-model="passwordRegister">
+                    </div>
+
+                    <!-- Repeat Password input -->
+                    <div class="form-outline mb-2">
+                      <input type="password" id="registerRepeatPassword" class="form-control"
+                        placeholder="Repeat Password" />
+                    </div>
+
+                    <!-- Checkbox -->
+                    <div class="form-check d-flex justify-content-center mb-4">
+                      <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+                        aria-describedby="registerCheckHelpText" />
+                      <label class="form-check-label" for="registerCheck">
+                        I have read and agree to the terms
+                      </label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button data-mdb-ripple-init type="button" class="btn btn-block mb-3 btn_sign"
+                      @click="register">Sign
+                      in</button>
+                  </form>
+                </div>
+
+              </div>
+              <!-- Pills content -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!--fin modaltt-->
+
+      <!--carrito-->
+
+
+
+      <div class="offcanvas offcanvas-end cart_offca" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+          <h3 class="offcanvas-title" id="offcanvasScrollingLabel">Shopping Cart</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body m-0">
+
+          <section class=""> <!--h-custom pone la barra de desplazamiento-->
+            <div class="container ">
+              <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12">
+                  <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                    <div class="card-body p-0 ">
+                      <div class="row g-0">
+                        <div class="col-lg-8">
+                          <div class="p-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                              <h6 class="mb-0 text-muted">{{items}} Items</h6>
+                            </div>
+                            <hr class="my-1 o_range">
+
+                            <div class="row d-flex justify-content-between align-items-center m-1"
+                              v-for="product of cart">
+                              <div class="col-md-2 col-lg-2 col-xl-2">
+                                <img :src="product.imageURL" class="img-fluid rounded-3" alt="Cotton T-shirt">
+                              </div>
+                              <div class="col-md-3 col-lg-3 col-xl-3">
+                                <h6 class="text-muted">{{product.name}}</h6>
+                              </div>
+                              <div class="col-md-3 col-lg-3 col-xl-2 d-flex ">
+                                <button class="btn btn-link px-1" @click="decrementQuantity(product)">
+                                  <i class="fas fa-minus o_range"></i>
+                                </button>
+
+                                <input id="form1" min="0" name="quantity" :value="product.quantity" type="number"
+                                  class="form-control form-control-sm " @input="updateQuantity(product, $event)">
+
+                                <button class="btn btn-link px-1" @click="incrementQuantity(product)">
+                                  <i class="fas fa-plus o_range"></i>
+                                </button>
+                              </div>
+                              <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                <h6 class="mb-0">U$D {{product.price}}</h6>
+                              </div>
+                              <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                <a href="#!" class="text-muted" @click="removeFromCart(product)"><i
+                                    class="bi bi-trash3"></i></a>
+                              </div>
+                              <hr class="my-1 o_range">
+                            </div>
+
+                            <hr class="my-1 o_range">
+
+
+
+                            <div class="pt-2 d-flex justify-content-evenly">
+                              <h6 class="mb-0"><a href="#!" class="text-body" data-bs-dismiss="offcanvas"
+                                  aria-label="Close"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a>
+                              </h6>
+                              <h6 class="mb-0"><a href="#" @click="clearCart" class="text-body"><i
+                                    class="bi bi-trash3"></i> Empty
+                                  cart</a>
+
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 bg-gre">
+                          <div class="p-5">
+                            <h3 class="fw-bold mb-2 mt-2 pt-1">Summary</h3>
+                            <hr class="my-4 o_range">
+
+                            <div class="d-flex justify-content-between mb-4">
+                              <h5 class="text-uppercase" v-if="items === 0">Not Products</h5>
+                              <h5 class="text-uppercase" v-if="items > 1">{{ items }} Products</h5>
+                              <h5 class="text-uppercase" v-if="items === 1">{{ items }} Product</h5>
+                            </div>
+                            <!-- <h5 class="text-uppercase">Total </h5>
+
+                              <h5>Total Amount: U$D {{totalAmount}}</h5> -->
+                          </div>
+                          <div class="d-flex justify-content-between mb-1">
+                            <h6 class="text-uppercase">Total price</h6>
+                          </div>
+                          <div></div>
+                          <h3 class="center">U$D {{totalAmount}}</h3>
+                          <hr class="my-4 o_range">
+
+                          <button type="button" class="btn btn_pays btn-block btn-lg" @click="redirect">Pays</button>
+                        </div>
+
+                        <!-- <h5 class="text-uppercase mb-3">Shipping</h5>
+
+                            <div class="mb-4 pb-2">
+                              <select class="select">
+                                <option value="1">Standard-Delivery- €5.00</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                                <option value="4">Four</option>
+                              </select>
+                            </div>
+
+                            <h5 class="text-uppercase mb-3">Give code</h5>
+
+                            <div class="mb-5">
+                              <div class="form-outline">
+                                <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                                <label class="form-label" for="form3Examplea2">Enter your code</label>
+                              </div>
+                            </div> -->
+
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      </section>
+
+  </div>
+  </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-lg-start text-muted">
+    <!-- Section: Social media -->
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <span>Get connected with us on social networks:</span>
+      </div>
+      <!-- Left -->
+
+      <!-- Right -->
+      <div>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="" class="me-4 text-reset">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+
+    <!-- Section: Links  -->
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              <i class="fas fa-gem me-3"></i>Tech Treasure
+            </h6>
+            <p>
+              The technological future at your fingertips.
+            </p>
+            <p>
+              We provide free advice through our communication channels.
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              About us?
+            </h6>
+            <p>
+              <a href="#!" class="text-reset">Terms and Conditions</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Technical service</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Privacy Policy</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Contact us</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Useful links
+            </h6>
+            <p>
+              <a href="#!" class="text-reset">Pricing</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Settings</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Orders</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Help</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+            <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+              info@example.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
+            <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+
+    <!-- Copyright -->
+    <div class="text-center p-4 w_hite">
+      © 2021 Copyright:
+      <a class="text-reset fw-bold w_hite" href="">MindHub</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
+  </div> <!--.grid_container .app-->
+
+
+  <!--bootstrap axios vue-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../scripts/customer.js"></script>
+  <script>
+  
+      document.getElementById('tab-login').addEventListener('click', function () {
+        document.getElementById('pills-login').classList.add('show', 'active');
+        document.getElementById('pills-register').classList.remove('show', 'active');
+      });
+  
+      document.getElementById('tab-register').addEventListener('click', function () {
+        document.getElementById('pills-login').classList.remove('show', 'active');
+        document.getElementById('pills-register').classList.add('show', 'active');
+      });
+    </script>
+</body>
+
+</html>
